@@ -25,7 +25,7 @@ def get_aqi(latitude, longitude):
         current = data["current"]
 
         return {
-            "us_aqi": current["us_aqi"],
+            "aqi": current["us_aqi"],
             "pm25": current["pm2_5"],
             "pm10": current["pm10"]
         }
@@ -94,7 +94,7 @@ def get_aqi_history(latitude, longitude):
 
             history.append({
                 "date": date,
-                "us_aqi": round(sum(values["us_aqi"]) / len(values["us_aqi"]), 1),
+                "aqi": round(sum(values["us_aqi"]) / len(values["us_aqi"]), 1),
                 "pm25": round(sum(values["pm25"]) / len(values["pm25"]), 1),
                 "pm10": round(sum(values["pm10"]) / len(values["pm10"]), 1)
             })
