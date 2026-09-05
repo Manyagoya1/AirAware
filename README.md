@@ -1,201 +1,465 @@
-# Weather + AQI API Layer
+# AI-Powered Personalized Weather & AQI Health Advisory
 
-This module provides live weather data, live air-quality data, and 7-day historical data for a given city.
+An AI-powered environmental health advisory system that combines real-time weather and air-quality data with user context to provide personalized, easy-to-understand environmental guidance.
 
-## 1. Features
+## Overview
 
-* City name → latitude and longitude
-* Current weather data
-* Current US AQI data
-* PM2.5 and PM10
-* 7-day historical weather
-* 7-day historical AQI
-* API error handling
-* One simple function for the complete dataset
+Traditional weather and AQI applications generally provide the same alerts and thresholds to everyone. However, environmental conditions can affect people differently depending on factors such as age group, health conditions, and occupation.
 
-## 2. Installation
+This project addresses this problem by combining:
 
-Install the required Python package:
+*  Real-time weather data
+*  Real-time Air Quality Index (AQI)
+*  User profile information
+*  Rule-based environmental risk analysis
+*  Personalized context analysis
+*  Explainable environmental factors
+*  Generative AI-based advisory
+*  Historical environmental records
+
+The system converts live environmental conditions into a personalized advisory that explains **what is happening, why it may matter for the user, and what practical steps can be considered.**
+
+---
+
+##  Key Features
+
+###  Live Weather Monitoring
+
+Retrieves current:
+
+* Temperature
+* Relative humidity
+* Wind speed
+* UV index
+
+###  Air Quality Monitoring
+
+Retrieves:
+
+* US AQI
+* PM2.5
+* PM10
+
+AQI values are categorized into levels such as:
+
+* Good
+* Moderate
+* Unhealthy for Sensitive Groups
+* Unhealthy
+* Very Unhealthy
+* Hazardous
+
+###  Environmental Risk Engine
+
+The rule-based risk engine analyzes environmental conditions and identifies important factors such as:
+
+* Elevated air pollution
+* Poor air quality
+* High temperature
+* Very high temperature
+* High humidity
+* Very high humidity
+* High wind speed
+* Strong winds
+
+###  Personalization
+
+The system considers:
+
+* Age group
+* Health condition
+* Occupation
+
+Examples include:
+
+* Adult
+* Child
+* Senior
+* Indoor worker
+* Outdoor worker
+* Athlete
+* Asthma
+* Respiratory sensitivity
+
+The personalization layer identifies conditions that are particularly relevant to the selected user profile.
+
+###  Explainability
+
+Instead of producing only a risk label, the system explains the environmental and profile-related factors contributing to the advisory.
+
+Example:
+
+> Poor air quality is an important environmental factor.
+
+> Outdoor work can increase the duration of exposure to polluted air.
+
+### 🤖 AI Advisory
+
+A Generative AI model produces a short, plain-English environmental advisory based on:
+
+* Current weather
+* AQI
+* PM2.5
+* PM10
+* User profile
+* Environmental factors
+* Personalized factors
+
+The AI is instructed to provide general environmental guidance rather than medical diagnosis or treatment.
+
+###  History
+
+The backend stores previous advisory requests and environmental conditions using SQLite.
+
+---
+
+##  System Architecture
+
+```text
+                 ┌─────────────────────┐
+                 │   User Profile      │
+                 │ Age / Health / Job   │
+                 └──────────┬──────────┘
+                            │
+                            ▼
+┌──────────────────────────────────────────────┐
+│             Live Environmental Data          │
+│                                              │
+│ Weather API              Air Quality API     │
+│ Temperature              AQI                 │
+│ Humidity                 PM2.5               │
+│ Wind Speed               PM10                │
+│ UV Index                                      │
+└──────────────────────┬───────────────────────┘
+                       │
+                       ▼
+              ┌──────────────────┐
+              │  Risk Engine     │
+              │                  │
+              │ Environmental    │
+              │ classification   │
+              └────────┬─────────┘
+                       │
+                       ▼
+              ┌──────────────────┐
+              │ Personalization  │
+              │                  │
+              │ Profile-specific │
+              │ factors          │
+              └────────┬─────────┘
+                       │
+                       ▼
+              ┌──────────────────┐
+              │ Explainability   │
+              │                  │
+              │ Why this matters │
+              └────────┬─────────┘
+                       │
+                       ▼
+              ┌──────────────────┐
+              │   Generative AI  │
+              │                  │
+              │ Personalized     │
+              │ Advisory         │
+              └────────┬─────────┘
+                       │
+                       ▼
+              ┌──────────────────┐
+              │ Flask Backend    │
+              │                  │
+              │ API + SQLite     │
+              └────────┬─────────┘
+                       │
+                       ▼
+              ┌──────────────────┐
+              │    Dashboard     │
+              └──────────────────┘
+```
+
+---
+
+##  Project Structure
+
+```text
+AI-Weather-AQI-Health-Advisory/
+│
+├── README.md
+├── .gitignore
+├── requirements.txt
+│
+├── app.py
+├── database.py
+├── weather.py
+├── aqi.py
+│
+├── engine/
+│   ├── __init__.py
+│   ├── risk_engine.py
+│   ├── personalization.py
+│   ├── explainability.py
+│   ├── advisory.py
+│   └── pipeline.py
+│
+├── notebooks/
+│   ├── risk_engine.ipynb
+│   ├── personalization.ipynb
+│   ├── advisory.ipynb
+│   └── ai_pipeline.ipynb
+│
+└── screenshots/
+```
+
+---
+
+## Team Responsibilities
+
+| Component             | Responsibility                                               | Name               |
+| --------------------- | ------------------------------------------------------------ |--------------------|
+| Live Weather & AQI    | Weather, AQI and geolocation APIs                            |Shashwat Srivastava |
+| AI & Personalization  | Risk engine, personalization, explainability and AI advisory |Anukreeti Singh     |
+| Backend & Integration | Flask API, SQLite history and system integration             |Manya Goyal         |
+| Frontend              | Dashboard and user interface                                 |Ayonija Tripthi     |
+
+---
+
+##  AI Processing Pipeline
+
+The AI component follows this pipeline:
+
+```text
+Live Weather + AQI
+        ↓
+Environmental Analysis
+        ↓
+User Profile
+        ↓
+Personalization
+        ↓
+Explainability
+        ↓
+Generative AI
+        ↓
+Personalized Advisory
+```
+
+The main pipeline function is:
+
+```python
+generate_personalized_advisory(
+    weather,
+    air,
+    profile
+)
+```
+
+The dashboard-ready function is:
+
+```python
+get_dashboard_advisory(
+    weather,
+    air,
+    profile
+)
+```
+
+---
+
+##  API Endpoint
+
+The backend provides a combined advisory endpoint:
+
+```text
+GET /api/advisory
+```
+
+Example:
+
+```text
+/api/advisory?city=Indore&age_group=adult&health_condition=asthma&occupation=outdoor%20worker
+```
+
+The response contains:
+
+* Weather information
+* Air-quality information
+* Environmental attention level
+* Personalized priority
+* Advisory summary
+* Explanation
+* Recommendations
+* Environmental factors
+* Personalized factors
+
+---
+
+##  Example Response
+
+```json
+{
+    "city": "Indore",
+    "weather": {
+        "temperature": 22.7,
+        "humidity": 94,
+        "wind_speed": 14.8,
+        "uv_index": 0.0
+    },
+    "air_quality": {
+        "aqi": 70,
+        "pm25": 22.2,
+        "pm10": 33.9
+    },
+    "attention_level": "Low",
+    "risk_level": "normal",
+    "environmental_factors": [
+        "Very high humidity"
+    ],
+    "personalized_factors": [
+        "Prolonged exposure to very high humidity"
+    ],
+    "advisory": "Current environmental conditions may make prolonged outdoor exposure less comfortable.",
+    "recommendations": [
+        "Take regular breaks in a comfortable environment.",
+        "Consider the current environmental conditions before prolonged outdoor work.",
+        "Check updated weather and air-quality conditions before outdoor activities."
+    ]
+}
+```
+
+---
+
+##  Technologies Used
+
+### Backend
+
+* Python
+* Flask
+* Flask-CORS
+* SQLite
+* SQLAlchemy
+
+### AI / Machine Learning
+
+* Python
+* Rule-based environmental risk engine
+* Generative AI
+* Groq API
+
+### APIs
+
+* Open-Meteo Weather API
+* Open-Meteo Air Quality API
+* Open-Meteo Geocoding API
+
+### Development
+
+* Jupyter Notebook
+* VS Code
+* Git
+* GitHub
+
+---
+
+## Installation
+
+Clone the repository:
+
+```bash
+git clone <repository-url>
+cd AI-Weather-AQI-Health-Advisory
+```
+
+Install dependencies:
 
 ```bash
 pip install -r requirements.txt
 ```
 
-## 3. Main Function
+Create a `.env` file in the project root:
 
-The main function for other team members is:
-
-```python
-from main import get_city_data
-
-data = get_city_data("Mumbai")
+```text
+GROQ_API_KEY=your_groq_api_key
 ```
 
-This returns current and historical data for Mumbai.
+Do not upload the `.env` file to GitHub.
 
-## 4. Current Data
+Run the backend:
 
-Access current weather and AQI:
-
-```python
-current = data["current"]
-
-print(current["temperature"])
-print(current["humidity"])
-print(current["wind_speed"])
-print(current["uv_index"])
-print(current["us_aqi"])
-print(current["pm25"])
-print(current["pm10"])
+```bash
+python app.py
 ```
 
-### Current fields
+The Flask server should start at:
 
-| Field         | Description                   |
-| ------------- | ----------------------------- |
-| `location`    | City name                     |
-| `latitude`    | Latitude of the city          |
-| `longitude`   | Longitude of the city         |
-| `temperature` | Current temperature in °C     |
-| `humidity`    | Current relative humidity (%) |
-| `wind_speed`  | Current wind speed            |
-| `uv_index`    | Current UV index              |
-| `us_aqi`      | Current US AQI                |
-| `pm25`        | PM2.5 concentration           |
-| `pm10`        | PM10 concentration            |
-
-## 5. Historical Data
-
-Access historical weather:
-
-```python
-weather_history = data["history"]["weather_history"]
+```text
+http://127.0.0.1:5000
 ```
 
-Each entry contains:
+---
 
-```python
-{
-    "date": "2026-09-04",
-    "max_temperature": 29.6,
-    "min_temperature": 24.8
-}
+##  Environment Variables
+
+The project uses the following environment variable:
+
+```text
+GROQ_API_KEY
 ```
 
-Access historical AQI:
+The API key is loaded using `python-dotenv`.
+
+Example:
 
 ```python
-aqi_history = data["history"]["aqi_history"]
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+
+api_key = os.getenv("GROQ_API_KEY")
 ```
 
-Each entry contains:
+---
 
-```python
-{
-    "date": "2026-09-04",
-    "us_aqi": 57.3,
-    "pm25": 12.2,
-    "pm10": 22.7
-}
+##  Security
+
+The `.gitignore` file should contain:
+
+```text
+.env
+__pycache__/
+*.pyc
 ```
 
-## 6. Complete Data Structure
+---
 
-The main function returns:
+## ⚠️ Disclaimer
 
-```python
-{
-    "current": {
-        "location": "...",
-        "latitude": 0.0,
-        "longitude": 0.0,
-        "temperature": 0.0,
-        "humidity": 0,
-        "wind_speed": 0.0,
-        "uv_index": 0.0,
-        "us_aqi": 0,
-        "pm25": 0.0,
-        "pm10": 0.0
-    },
+This project provides general environmental information and guidance for demonstration purposes. It is not intended to diagnose medical conditions, replace professional medical advice, or prescribe treatment.
 
-    "history": {
-        "location": "...",
+---
 
-        "weather_history": [
-            {
-                "date": "...",
-                "max_temperature": 0.0,
-                "min_temperature": 0.0
-            }
-        ],
+##  Future Scope
 
-        "aqi_history": [
-            {
-                "date": "...",
-                "us_aqi": 0.0,
-                "pm25": 0.0,
-                "pm10": 0.0
-            }
-        ]
-    }
-}
-```
+Potential improvements include:
 
-## 7. Example
+* Regional-language advisories
+* More detailed environmental trend analysis
+* Personalized notification alerts
+* Mobile application
+* Location-based push notifications
+* Historical AQI and weather visualization
+* More user profiles
+* Improved explainable AI
+* Integration with additional environmental data sources
+* Predictive environmental exposure analysis
 
-```python
-from main import get_city_data
+---
 
-data = get_city_data("Mumbai")
+##  Hackathon Goal
 
-if data:
-    print("Temperature:", data["current"]["temperature"], "°C")
-    print("US AQI:", data["current"]["us_aqi"])
-    print("PM2.5:", data["current"]["pm25"])
+The goal of this project is to demonstrate how **real-time environmental data, rule-based reasoning, personalization, explainable AI, and generative AI** can be combined to move beyond generic weather and AQI alerts toward user-specific environmental guidance.
 
-    print("\n7-Day Weather:")
-    print(data["history"]["weather_history"])
+---
 
-    print("\n7-Day AQI:")
-    print(data["history"]["aqi_history"])
-```
+##  Project Status
 
-## 8. Important AQI Note
-
-The AQI value provided by this module is **US AQI**, not India's National Air Quality Index (NAQI).
-
-The field is intentionally named:
-
-```python
-us_aqi
-```
-
-to make this distinction clear.
-
-## 9. API Sources
-
-Weather and geocoding data are obtained from Open-Meteo.
-
-Air-quality data are obtained from the Open-Meteo Air Quality API.
-
-No API key is required for the current implementation.
-
-## 10. Team Integration
-
-Other team members should normally use only:
-
-```python
-from main import get_city_data
-
-data = get_city_data("City Name")
-```
-
-They do not need to directly call the individual weather or AQI functions.
-
-The returned data can be used by:
-
-* Streamlit dashboard
-* Personalized AI advisory
-* Historical charts
-* Alert generation
-* User health-profile analysis
+**Hackathon Prototype — In Development**
