@@ -1,0 +1,6 @@
+{
+  "name": "AirAware",
+  "description": "AI-Powered Personalized Weather & AQI Health Advisory dashboard delivering real-time environmental monitoring, risk analysis, and tailored health guidance.",
+  "requestFramePermissions": ["geolocation"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
