@@ -213,12 +213,12 @@ AI-Weather-AQI-Health-Advisory/
 
 ##  Team Responsibilities
 
-| Component             | Responsibility                                               |
-| --------------------- | ------------------------------------------------------------ |
-| Live Weather & AQI    | Weather, AQI and geolocation APIs                            |
-| AI & Personalization  | Risk engine, personalization, explainability and AI advisory |
-| Backend & Integration | Flask API, SQLite history and system integration             |
-| Frontend              | Dashboard and user interface                                 |
+| Component             | Responsibility                                               |Name                 |
+| --------------------- | ------------------------------------------------------------ |---------------------|
+| Live Weather & AQI    | Weather, AQI and geolocation APIs                            |Shashwat Srivastava  |
+| AI & Personalization  | Risk engine, personalization, explainability and AI advisory |Anukreeti Singh      |
+| Backend & Integration | Flask API, SQLite history and system integration             |Manya Goyal          |
+| Frontend              | Dashboard and user interface                                 |Ayonija Tripathi     |
 
 ---
 
